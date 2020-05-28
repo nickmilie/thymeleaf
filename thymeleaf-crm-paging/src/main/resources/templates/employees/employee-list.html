@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th=”http://www.thymeleaf.org”>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+    </style>
+
+    <title>Employee List</title>
+</head>
+<body>
+
+<div class="container">
+    <h3>Employee Directory</h3>
+    <hr>
+
+    <a th:href="@{/manager/addForm}"
+    class="btn btn-primary btn-sm mb-3">
+        Add an Employee
+    </a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employeeList}">
+            <td th:text="${employee.firstName}"/>
+            <td th:text="${employee.lastName}"/>
+            <td th:text="${employee.email}"/>
+            <td>
+                <a th:href="@{/manager/updateForm(employeeId = ${employee.id})}"
+                class="btn btn-info btn-sm">
+                    Update
+                </a>
+
+                <a th:href="@{/manager/delete(employeeId = ${employee.id})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                    Delete
+                </a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:class="pagination"
+    th:each="pageNumber : ${pageNumbers}">
+
+        <a th:href="@{/manager/list(pageNo=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber == employeeList.number + 1} ? active">
+
+        </a>
+    </div>
+
+</div>
+</body>
+</html>
